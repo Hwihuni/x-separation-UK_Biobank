@@ -4,7 +4,7 @@ This repository contains the X-separation application for UK biobank datasets.
 
 ## UKB dataset
 
-The whole data of UK biobank can be access with https://www.ukbiobank.ac.uk/
+The whole data of UK biobank can be accessed by https://www.ukbiobank.ac.uk/
 
 ## Pretrained models
 
