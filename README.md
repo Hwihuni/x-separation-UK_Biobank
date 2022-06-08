@@ -1,4 +1,4 @@
-# X-separation application to UK biobank dataset
+# x-separation application to UK biobank dataset
 
 This repository contains the X-separation application for UK biobank datasets.
 
@@ -17,7 +17,7 @@ PYTHON: use env.yml file in python/r2_r2star_mapping
 FSL built with wsl
 ```
 
-## X-separation reconstruction
+## x-separation reconstruction
 * change 'path' in Biobank_x_sep_step1_GREprocessing.m, Biobank_x_sep_step2_DLpreprocessing.m, and Biobank_x_sep_step3_reconstrction.m
 * run Biobank_x_sep_step1_GREprocessing.m and Biobank_x_sep_step2_DLpreprocessing.m
 * move Data_to_gpu_t2map.mat and Data_to_gpu_t2starmap.mat to python\r2_r2star_mapping\data
