@@ -22,5 +22,5 @@ FSL built with wsl
 * run Biobank_x_sep_step1_GREprocessing.m and Biobank_x_sep_step2_DLpreprocessing.m
 * move Data_to_gpu_t2map.mat and Data_to_gpu_t2starmap.mat to python\r2_r2star_mapping\data
 * run predict_r2.py and predict_r2star.py
-* move inference file to 'inf_from_gpu' which made in your directory
+* move inference file to 'inf_from_gpu' which is made in your directory
 * run Biobank_x_sep_step3_reconstrction.m
