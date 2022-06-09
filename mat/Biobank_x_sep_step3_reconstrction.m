@@ -18,7 +18,7 @@ r2star_deep = permute(-10*(log(R2star+eps)),[2 3 1]).*mask_vsf;
 load([path(1:end-3) 'mat\registered_images.mat'])
 R2_MPR_FLA = -10*log(permute(T2,[2 3 1]));
 R2_MPR_FLA(isinf(R2_MPR_FLA) | isnan(R2_MPR_FLA))=0;
-R2_MPR_FLA_resample = resample_image(rot90(R2_MPR_FLA,-2),voxel_size,voxelsize_new);
+R2_MPR_FLA_resample = resample_image(fliplr(R2_MPR_FLA),voxel_size,voxelsize_new);
 
 [ r2_MPR_FLA_reg_r2s, ~] = fsl_flirt2( r2star_deep.*mask_vsf,R2_MPR_FLA_resample,6,voxelsize_new);
 r2prime_MPR_FLA_r2sdeep= (r2star_deep-r2_MPR_FLA_reg_r2s).*mask_vsf;
