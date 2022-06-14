@@ -21,6 +21,7 @@ R2_MPR_FLA(isinf(R2_MPR_FLA) | isnan(R2_MPR_FLA))=0;
 R2_MPR_FLA_resample = resample_image(rot90(R2_MPR_FLA,-2),voxel_size,voxelsize_new);
 
 [ r2_MPR_FLA_reg_r2s, ~] = fsl_flirt2( r2star_deep.*mask_vsf,R2_MPR_FLA_resample,6,voxelsize_new);
+% [ r2_MPR_FLA_reg_r2s, ~] = fsl_flirt2( r2star_deep.*mask_vsf,rot90(R2_MPR_FLA,-2),6,voxelsize_new);
 r2prime_MPR_FLA_r2sdeep= (r2star_deep-r2_MPR_FLA_reg_r2s).*mask_vsf;
 r2prime_MPR_FLA_r2sdeep(r2prime_MPR_FLA_r2sdeep<0) = 0;
 [x_pos_MPR_FLA_r2sdeep, x_neg_MPR_FLA_r2sdeep, x_tot_MPR_FLA_r2sdeep]= x_sep_SA(dB_vsf/2/pi/TE,r2prime_MPR_FLA_r2sdeep, mask_vsf,params,x_sa);

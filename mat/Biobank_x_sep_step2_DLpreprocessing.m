@@ -1,14 +1,12 @@
 clear
 path = 'D:\1001613_3';
 voxelsize = [1.05 1 2];
-voxelsize_T1 = [1 1 1];
-voxelsize_R2= [1 1 2];
-voxelsize_Flair= [1.05 1 1];
+
+voxelsize_T1 = niftiinfo([path '/T1/T1.nii.gz']).PixelDimensions;
+voxelsize_Flair= niftiinfo([path '/T2_FLAIR/T2_FLAIR.nii.gz']).PixelDimensions;
 
 T1_pre =fliplr( double(niftiread([path '/T1/T1.nii.gz'])));
 Flair_pre = fliplr(double(niftiread([path '/T2_FLAIR/T2_FLAIR.nii.gz'])));
-
-
 
 T1_pre_vox = resample_image(T1_pre,voxelsize_T1,voxelsize);
 Flair_pre_vox = resample_image(Flair_pre,voxelsize_Flair,voxelsize);
