@@ -114,7 +114,7 @@ for i = 1:size(S1,1)
 end
 r2star = -log(R2star_img(:,:,:,2)./R2star_img(:,:,:,1))/(TEs(2) - TEs(1));
 r2star(isnan(r2star))=0;
-save([path(1:end-7) 'mat\r2starimg_svd_2e.mat'],'R2star_img')
+save([path(1:end-7) 'mat\r2starimg_svd_2e.mat'],'R2star_img','pd')
 niftiwrite(r2star, [path '/QSM/r2star.nii'], nii_info, 'Compressed', true);
 %% 
        

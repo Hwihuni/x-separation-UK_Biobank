@@ -69,8 +69,8 @@ if __name__ == '__main__':
     net_u = UNet(n_channels=2, n_classes=1, bilinear=True)
     net_fc = Fc(n_channels=3, n_classes=1)
     
-    net_u.load_state_dict(torch.load('./checkpoints/DS_Unet_prc_normal_11_22_17_31.pth', map_location=device))
-    net_fc.load_state_dict(torch.load('./checkpoints/DS_Fc_prc_normal_11_22_17_31.pth', map_location=device))
+    net_u.load_state_dict(torch.load('./checkpoints/DS_Unet_prc_normal_10_23_21_11.pth', map_location=device))
+    net_fc.load_state_dict(torch.load('./checkpoints/DS_Fc_prc_normal_10_23_21_11.pth', map_location=device))
 
     net_u.to(device=device)
     net_fc.to(device=device)

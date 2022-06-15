@@ -46,7 +46,7 @@ voxel_size = [0.8 0.8 3];
 voxelsize_new = [1.05 1 3];
 load([path '\mat\r2starimg_svd_2e.mat'])
 
-r2star_img = R2star_img;
+r2star_img = pd.*R2star_img;
 [~,mask] = fsl_bet(mean(R2star_img,4),0.3,voxelsize_new);
 r2star_norm = mask;
 img = r2star_img.*mask/prctile(r2star_img(mask~=0),99);
