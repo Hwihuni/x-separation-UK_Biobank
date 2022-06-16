@@ -81,10 +81,10 @@ if __name__ == '__main__':
         file_list = glob.glob(path)
         print ("file_list_py: {}".format(file_list))
         for step, path_val in enumerate(file_list):
-            print(inf_dir+f'inference_r2star{step}.mat')
+            print(inf_dir+f'inference_r2star_{path_val[-13:-4]}.mat')
             img = predict_net(net_u=net_u,net_fc = net_fc,device=device)
             savedict = {'R2star':np.squeeze(img[:,0,:,:])}
-            load = scipy.io.savemat(inf_dir+f'inference_r2star_{step}.mat',savedict)
+            load = scipy.io.savemat(inf_dir+f'inference_r2star_{path_val[-13:-4]}.mat',savedict)
             logging.info('Inference saved')
 
     except KeyboardInterrupt:

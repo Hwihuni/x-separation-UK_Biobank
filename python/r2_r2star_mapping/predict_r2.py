@@ -71,7 +71,7 @@ if __name__ == '__main__':
     
     net_u.load_state_dict(torch.load('./checkpoints/DS_Unet_prc_normal_10_23_21_11.pth', map_location=device))
     net_fc.load_state_dict(torch.load('./checkpoints/DS_Fc_prc_normal_10_23_21_11.pth', map_location=device))
-
+    
     net_u.to(device=device)
     net_fc.to(device=device)
 
@@ -81,10 +81,10 @@ if __name__ == '__main__':
         file_list = glob.glob(path)
         print ("file_list_py: {}".format(file_list))
         for step,path_val in enumerate(file_list):
-            print(inf_dir+f'inference_r2_{step}.mat')
+            print(inf_dir+f'inference_r2_{path_val[-13:-4]}.mat')
             img = predict_net(net_u=net_u,net_fc = net_fc,device=device)
             savedict = {'T2':np.squeeze(img[:,0,:,:])}
-            load = scipy.io.savemat(inf_dir+f'inference_r2_{step}.mat',savedict)
+            load = scipy.io.savemat(inf_dir+f'inference_r2_{path_val[-13:-4]}.mat',savedict)
             logging.info('Inference saved')
 
     except KeyboardInterrupt:
