@@ -1,5 +1,6 @@
+path = 'D:\UKB\Real_data\1004671_3\';
 
-di = 'D:\1001613_3\QSM\15_20190928\';
+di =[path 'QSM\' dir([path 'QSM\15*']).name '\'];
 flist=dir([di '*.dcm']); 
 
 echoes_num = 2;
@@ -14,7 +15,7 @@ for i = 1:size(flist,1)
     if info1.InstanceNumber==1
     coil = cat(1,coil, string(info1.Private_0051_100f));
     end
-    if size(coil) == [coils_num, 1]
+    if size(coil,1) == coils_num
         break
     end
 end
@@ -30,15 +31,15 @@ nii_info.Datatype = 'double';
 nii_info.ImageSize = size(rot90(img_data(:,:,1:slices_num,1),-1));
 nii_info.PixelDimensions = [str2num(info1.Private_0051_100c(9:11))/size(img_data,1) str2num(info1.Private_0051_100c(5:7))/size(img_data,2) 3];
 mkdir([di(1:end-12) 'NII']);
-mkdir([di(1:end-12) 'NII\SWI\MAG_TE1']);
-mkdir([di(1:end-12) 'NII\SWI\MAG_TE2']);
+mkdir([di(1:end-12) 'NII\MAG_TE1']);
+mkdir([di(1:end-12) 'NII\MAG_TE2']);
 for i = 1:coils_num
     niftiwrite(rot90(img_data(:,:,1:slices_num,i),-1), [di(1:end-12) 'NII\MAG_TE1\' num2str(i) '.nii'], nii_info, 'Compressed', true);
     niftiwrite(rot90(img_data(:,:,slices_num+1:end,i),-1), [di(1:end-12) 'NII\MAG_TE2\' num2str(i) '.nii'], nii_info, 'Compressed', true);
 end
 %% 
 
-di = 'D:\1001613_3\QSM\18_20190928\';
+di =[path 'QSM\' dir([path 'QSM\18*']).name '\'];
 flist=dir([di '*.dcm']); 
 
 echoes_num = 2;

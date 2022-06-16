@@ -1,25 +1,25 @@
 clear
 rmpath(genpath('./STISuite_V3.0/'));
 addpath(genpath('./STISuite_V3.0/'));
-path = 'D:\1001613_3\QSM\NII';
-path_fsl = '/mnt/d/1001613_3/QSM/NII';
+path = 'D:\UKB\Real_data\1004671_3\';
+path_fsl = '/mnt/d/UKB/Real_data/1004671_3/';
 
 TE1 = '0.00942';
 TE2 = '0.01970';
-fn_pha1 = dir([path '/PHA_TE1/*.nii.gz']);
+fn_pha1 = dir([path 'QSM/NII/PHA_TE1/*.nii.gz']);
 
 num_channels = length(fn_pha1);
 
 for j = 1:num_channels
-    phs1(:, :, :, j) = double(niftiread([path '/PHA_TE1/' fn_pha1(j).name]));
+    phs1(:, :, :, j) = double(niftiread([path 'QSM/NII/PHA_TE1/' fn_pha1(j).name]));
 end
 
 dim = size(phs1); 
 M1 = zeros(dim);
-fn_mag1 = dir([path '/MAG_TE1/*.nii.gz']);
+fn_mag1 = dir([path 'QSM/NII/MAG_TE1/*.nii.gz']);
 
 for j = 1:num_channels
-    M1(:, :, :, j) = double(niftiread([path '/MAG_TE1/' fn_mag1(j).name]));
+    M1(:, :, :, j) = double(niftiread([path 'QSM/NII/MAG_TE1/' fn_mag1(j).name]));
 end
 
 phase1 = ((phs1 - 2048) / 2048) * pi;
@@ -28,17 +28,17 @@ S1 = M1 .* exp(1i * phase1);
 clear M1 phase1 phs1 fn_pha1 fn_mag1;
 
 phs2 = zeros(dim);
-fn_pha2 = dir([path '/PHA_TE2/*.nii.gz']);
+fn_pha2 = dir([path 'QSM/NII/PHA_TE2/*.nii.gz']);
 
 for j = 1:num_channels
-    phs2(:, :, :, j)=double(niftiread([path '/PHA_TE2/' fn_pha2(j).name]));
+    phs2(:, :, :, j)=double(niftiread([path 'QSM/NII/PHA_TE2/' fn_pha2(j).name]));
 end
 
 M2 = zeros(dim);
-fn_mag2 = dir([path '/MAG_TE2/*.nii.gz']);
+fn_mag2 = dir([path 'QSM/NII/MAG_TE2/*.nii.gz']);
 
 for j = 1:num_channels
-    M2(:, :, :, j) = double(niftiread([path '/MAG_TE2/' fn_mag2(j).name]));
+    M2(:, :, :, j) = double(niftiread([path 'QSM/NII/MAG_TE2/' fn_mag2(j).name]));
 end
 
 phase2 = ((phs2 - 2048) / 2048) * pi;
@@ -79,24 +79,21 @@ hip_abs = abs(hip);
 hip_angle = angle(hip);
 
 Mag_brain = mean(sqrt(abs(S1).^2+abs(S2).^2),4);
-nii_info = niftiinfo([path(1:end-3) 'QSM_mcpc3Ds_MAG_TE1.nii.gz']);
+nii_info = niftiinfo([path 'QSM\QSM_mcpc3Ds_MAG_TE1.nii.gz']);
 nii_info.Datatype = 'double';
 nii_info.ImageSize = dim(1:3);
 nii_info.PixelDimensions = [1.05 1 3];
-mkdir([path '/QSM'])
-niftiwrite(hip_abs, [path '/QSM/hip_abs.nii'], nii_info, ...
-           'Compressed', true);
-niftiwrite(hip_angle, [path '/QSM/hip_angle.nii'], nii_info,...
-           'Compressed', true);
+niftiwrite(hip_abs, [path 'QSM/hip_abs.nii'], nii_info, 'Compressed', true);
+niftiwrite(hip_angle, [path 'QSM/hip_angle.nii'], nii_info,'Compressed', true);
 %% prelude unwrapping
 system(['bash -c "source ~/.profile && bet2 ', path_fsl, ...
-        '/QSM/hip_abs.nii.gz ', path_fsl, ...
-        '/QSM/QSM -m -f 0.35"']);
-system(['bash -c "source ~/.profile && prelude -a ', path_fsl, '/QSM/hip_abs.nii.gz -p ', ...
-        path_fsl, '/QSM/hip_angle.nii.gz -u ', path_fsl, ...
-        '/QSM/hip_uw.nii.gz -m ', path_fsl, '/QSM/QSM_mask.nii.gz"']);
+        'QSM/hip_abs.nii.gz ', path_fsl, ...
+        'QSM/QSM -m -f 0.35"']);
+system(['bash -c "source ~/.profile && prelude -a ', path_fsl, 'QSM/hip_abs.nii.gz -p ', ...
+        path_fsl, 'QSM/hip_angle.nii.gz -u ', path_fsl, ...
+        'QSM/hip_uw.nii.gz -m ', path_fsl, 'QSM/QSM_mask.nii.gz"']);
 %% R2star mapping
-unwrappedHip=double(niftiread([path '/QSM/hip_uw.nii.gz']));
+unwrappedHip=double(niftiread([path 'QSM\hip_uw.nii.gz']));
 
 TEs(1)=str2double(TE1);
 TEs(2)=str2double(TE2);
@@ -114,8 +111,9 @@ for i = 1:size(S1,1)
 end
 r2star = -log(R2star_img(:,:,:,2)./R2star_img(:,:,:,1))/(TEs(2) - TEs(1));
 r2star(isnan(r2star))=0;
-save([path(1:end-7) 'mat\r2starimg_svd_2e.mat'],'R2star_img','pd')
-niftiwrite(r2star, [path '/QSM/r2star.nii'], nii_info, 'Compressed', true);
+mkdir([path 'mat'])
+save([path 'mat\r2starimg_svd_2e.mat'],'R2star_img','pd')
+niftiwrite(r2star, [path 'QSM/r2star.nii'], nii_info, 'Compressed', true);
 %% 
        
 scale = TEs(1) / (TEs(2) - TEs(1));
@@ -156,11 +154,11 @@ S1_c = S1 .* squeeze(conj(po_c));
 %% 
 combined1 = weightedCombination(S1_c, abs(S1_c));
 combined1(~isfinite(combined1)) = 0;
-mask = double(niftiread([path '/QSM/QSM_mask.nii.gz']));
+mask = double(niftiread([path 'QSM/QSM_mask.nii.gz']));
 nii = angle(combined1) .* mask;
 
 nii_info.Datatype = 'single';
-niftiwrite(single(nii), [path '/QSM/PHASE_TE1.nii'], nii_info, ...
+niftiwrite(single(nii), [path 'QSM/PHASE_TE1.nii'], nii_info, ...
            'Compressed',true);
 
 clear nii S1_c;
@@ -175,7 +173,7 @@ clear S1_c S2_c;
 
 combined2(~isfinite(combined2)) = 0;
 nii = angle(combined2) .* mask;
-niftiwrite(single(nii), [path '/QSM/PHASE_TE2.nii'], nii_info, ...
+niftiwrite(single(nii), [path 'QSM/PHASE_TE2.nii'], nii_info, ...
            'Compressed',true);
 
 clear hip hip_abs hip_angle nii po_c S1_c S2_c smoothed_weight ;
@@ -188,7 +186,7 @@ phase2 = mask .* angle(combined2);
 
 clear combined1 combined2;
 
-di = [path(1:end-3) '15_20190928\'];
+di = [path 'QSM\' dir([path 'QSM\15*']).name '\'];
 flist=dir([di '*.dcm']); 
 
 
@@ -257,8 +255,8 @@ L = tukeywin(size(r2s_k,1),0.5)*tukeywin(size(r2s_k,2),0.5)';
 r2star = abs(ifft2c(r2s_k.*L));
 voxel_size = [1.05 1 2];
 voxelsize_new = [1.05 1 3];
-mkdir([path(1:end-7) 'result'])
-save([path(1:end-7) 'mat\for_xsep.mat'],'dB_vsf','r2star','Mag_brain','mask_vsf','TE','B0','H','voxsz','path','voxelsize_new','voxel_size')
+mkdir([path 'result'])
+save([path 'mat\for_xsep.mat'],'dB_vsf','r2star','Mag_brain','mask_vsf','TE','B0','H','voxsz','path','voxelsize_new','voxel_size')
 
 %% 
 qsm_iLSQR_vsf = QSM_iLSQR(dB_vsf, mask_vsf, 'TE', TE, 'B0', B0, ...
@@ -268,4 +266,4 @@ niftiwrite(single(qsm_iLSQR_vsf * 1000), [path '/QSM/QSM.nii'], ...
            nii_info, 'Compressed', true);
 figure(1);imshow_3df(qsm_iLSQR_vsf/2/pi/123,[-.1 .1])
 x_sa = qsm_iLSQR_vsf/2/pi/123;
-save([path(1:end-7) 'result\QSM.mat'],'qsm_iLSQR_vsf','x_sa')
+save([path 'result\QSM.mat'],'qsm_iLSQR_vsf','x_sa')
