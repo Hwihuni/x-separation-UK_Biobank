@@ -17,6 +17,9 @@ PYTHON: use env.yml file in python/r2_r2star_mapping
 FSL built with wsl
 ```
 
+## ONNX
+You can easily run the code in the Pipeline_onnx!
+
 ## x-separation reconstruction
 * change 'path' in Biobank_x_sep_step0_Dicomprocessing.m, Biobank_x_sep_step1_GREprocessing.m, Biobank_x_sep_step2_DLpreprocessing.m, and Biobank_x_sep_step3_reconstrction.m
 * run Biobank_x_sep_step0_Dicomprocessing.m, Biobank_x_sep_step1_GREprocessing.m and Biobank_x_sep_step2_DLpreprocessing.m
