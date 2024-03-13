@@ -16,7 +16,7 @@ load([path 'mat\inf_from_gpu\' dire(1).name])
 load([path 'mat\inf_from_gpu\' dire(2).name])
 r2star_deep = permute(-10*(log(R2star+eps)),[2 3 1]).*mask_vsf;
 load([path 'mat\registered_images.mat'])
-R2_MPR_FLA = -10*log(permute(T2,[2 3 1]));
+R2_MPR_FLA = -10*log(permute(T2,[2 3 1])).*(T2 ~= 0);
 R2_MPR_FLA(isinf(R2_MPR_FLA) | isnan(R2_MPR_FLA))=0;
 R2_MPR_FLA_resample = resample_image(rot90(R2_MPR_FLA,-2),voxel_size,voxelsize_new);
 

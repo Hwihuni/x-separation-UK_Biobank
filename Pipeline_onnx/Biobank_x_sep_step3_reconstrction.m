@@ -16,7 +16,7 @@ load([path 'mat\' dire(1).name])
 load([path 'mat\' dire(2).name])
 r2star_deep = (-10*(log(R2star+eps))).*mask_vsf;
 load([path 'mat\registered_images.mat'])
-R2_MPR_FLA = -10*log(T2+eps);
+R2_MPR_FLA = -10*log(T2+eps).*(T2 ~= 0);
 R2_MPR_FLA(isinf(R2_MPR_FLA) | isnan(R2_MPR_FLA))=0;
 R2_MPR_FLA_resample = resample_image(rot90(R2_MPR_FLA,-2),voxel_size,voxelsize_new);
 
