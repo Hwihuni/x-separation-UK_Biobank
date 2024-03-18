@@ -1,7 +1,7 @@
 % clear
 % path = 'F:\xsep_ukb_newpipe\1001658_3\';
 
-% path_fsl = '/mnt/f/xsep_ukb_newpipe/1001658_3/';
+% path_fsl = '/mnt/f/UKB_real/1001613_3/1001613_3/';
 
 TE1 = '0.00942';
 TE2 = '0.01970';
@@ -55,13 +55,19 @@ matrix_size_new = round(matrix_size.*voxel_size./voxelsize_new);
 start = matrix_size/2-matrix_size_new/2+1;
 en = matrix_size/2+matrix_size_new/2;
 
+tukey_param = 0.5;
+
 measc_k = fft3c(S1,11);
 measc_k_down = measc_k(start(1):en(1),start(2):en(2),start(3):en(3),:);
-S1 = ifft3c(measc_k_down,11);
+
+tukey_fil_xy = tukeywin(size(measc_k_down,1),tukey_param)*tukeywin(size(measc_k_down,2),tukey_param)';
+tukey_fil_z = reshape(tukeywin(size(measc_k_down,3),tukey_param),[1 1 size(measc_k_down,3)]);
+
+S1 = ifft3c(measc_k_down.*tukey_fil_xy.*tukey_fil_z,11);
 
 measc_k = fft3c(S2,11);
 measc_k_down = measc_k(start(1):en(1),start(2):en(2),start(3):en(3),:);
-S2 = ifft3c(measc_k_down,11);
+S2 = ifft3c(measc_k_down.*tukey_fil_xy.*tukey_fil_z,11);
 clear voxel_size voxelsize_new start en matrix_size matrix_size_new measc_k measc_k_down
 
 dim = size(S2); 
@@ -249,9 +255,10 @@ for ii = 1:dim(3)
 end
 mask_vsf = imfill(mask_vsf,26,'holes');
 clear map phs_comb map2 tmp tmp2 i ii k dcm_info S1 S2  TE1 TE2
-r2s_k = fft2c(r2star.*mask_vsf);
-L = tukeywin(size(r2s_k,1),0.5)*tukeywin(size(r2s_k,2),0.5)';
-r2star = abs(ifft2c(r2s_k.*L));
+% r2s_k = fft2c(r2star.*mask_vsf);
+% L = tukeywin(size(r2s_k,1),0.5)*tukeywin(size(r2s_k,2),0.5)';
+% r2star = abs(ifft2c(r2s_k.*L)).*mask_vsf;
+
 voxel_size = [1.05 1 2];
 voxelsize_new = [1.05 1 3];
 mkdir([path 'result'])
