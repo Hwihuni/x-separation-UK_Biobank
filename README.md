@@ -1,6 +1,10 @@
-# x-separation application to UK biobank dataset
 
+# x-separation application to UK biobank dataset
 This repository contains the X-separation application for UK biobank datasets.
+> H. Jeong, S. Oh, J. Lee, and H. Shin, _Application of susceptibility source separation (chi-separation) to UK Biobank protocol and clinical protocol using deep neural network_, ISMRM 2022,
+> [[abstract]](https://archive.ismrm.org/2022/2364.html)
+
+
 
 ## UKB dataset
 
